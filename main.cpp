@@ -2,7 +2,6 @@
 #include "raylib.h"
 #include "raymath.h"
 #include "pdb_file_parser.h"
-#include "molecule_file_parser.h"
 #include <fstream>
 #include <unordered_map>
 #include "rlgl.h"
