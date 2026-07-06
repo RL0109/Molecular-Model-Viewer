@@ -16,6 +16,9 @@ class ParsingTests : public Cppunit {
             ifstream molecularFile("LEU.cif");
             PDBFileParser parsedFile(molecularFile);
 
+            Vector3 testingSum = {0.0f, 0.0f, 0.0f};
+
+
             float expected_x = ((16.293 - parsedFile.sum.x/parsedFile.atomData.size()));
             float expected_y = ((15.907 - parsedFile.sum.y/parsedFile.atomData.size()));
             float expected_z = ((52.123 - parsedFile.sum.z/parsedFile.atomData.size()));
@@ -39,6 +42,22 @@ class ParsingTests : public Cppunit {
                 failedAmount++;
                 std::cout << " Failed value: " << (parsedFile.atomData[0].position.z - expected_z) << "\n";
             }
+
+            size_t expected_atom_count = 22;
+            CHECKT(parsedFile.atomData.size() == expected_atom_count);
+            
+            CHECKT(parsedFile.atomData[0].elementId == 'N');
+
+            for (auto atom : parsedFile.atomData) {
+                testingSum.x += atom.position.x;
+                testingSum.y += atom.position.y;
+                testingSum.z += atom.position.z;
+            }
+
+            CHECKT(testingSum.x - parsedFile.sum.x < epsilon);
+            CHECKT(testingSum.y - parsedFile.sum.y < epsilon);
+            CHECKT(testingSum.z - parsedFile.sum.z < epsilon);
+
             status();
         }
 };
