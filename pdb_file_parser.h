@@ -14,12 +14,15 @@ class PDBFileParser {
     friend class ParsingTests;
     Vector3 sum = {0.0f, 0.0f, 0.0f};
 
+    vector<int> moleculeCoordinates = {12,13,14};
+    vector<int> pdbCoordinates = {10,11,12};
+
+    bool usePDBCoordinates = false;
+
     public:
     struct Atom {
         Vector3 position;
         char elementId;
-        float size;
-        Color color;
 
         Atom(Vector3 pos, char eId) {
             position = pos;
@@ -73,9 +76,20 @@ class PDBFileParser {
         string line; 
         bool insideTargetLoop = false;
         bool finishedHeader = false;
+        std::string activeKeyWord = "_chem_comp_atom.comp_id";
+
+        while (std::getline(moleculeFile, line)) {
+            if (line.rfind("_atom_site.group_PDB",0) == 0) {
+                activeKeyWord = "_atom_site.group_PDB";
+                usePDBCoordinates = true;
+            }
+        }
+
+        moleculeFile.clear();
+        moleculeFile.seekg(0, std::ios::beg);
 
         while (std::getline(moleculeFile , line)) {
-            if (line.rfind("_chem_comp_atom.comp_id",0 ) == 0) {
+            if (line.rfind(activeKeyWord,0 ) == 0) {
                 insideTargetLoop = true;
             }
             
@@ -115,16 +129,32 @@ class PDBFileParser {
     
         for (int i = 1; i < moleculedata.size(); i++ )
         {
+
+            Vector3 coordinates = {0.0f, 0.0f, 0.0f};
             //Pull vector data from file
-            Vector3 coordinates = {stof(moleculedata[i][12]), stof(moleculedata[i][13]), stof(moleculedata[i][14])};
+            if (usePDBCoordinates == true) {
+                coordinates = {stof(moleculedata[i][pdbCoordinates[0]]), stof(moleculedata[i][pdbCoordinates[1]]), stof(moleculedata[i][pdbCoordinates[2]])};
+            } else {
+                coordinates = {stof(moleculedata[i][moleculeCoordinates[0]]), stof(moleculedata[i][moleculeCoordinates[1]]), stof(moleculedata[i][moleculeCoordinates[2]])};
+            }
+            
+            char element;
+
             //Pull element character from file
-            char element = moleculedata[i][1][0];
+            if (usePDBCoordinates == true) {
+                element = moleculedata[i][2][0];
+            } else {
+                element = moleculedata[i][1][0];
+            }
+            
             //Applying coordinates and element to vector
             atomData.push_back(Atom(coordinates, element));
         }
     }
 
     void centerMolecule() {
+        sum = {0.0f, 0.0f, 0.0f};
+
         if (atomData.empty()) return;
 
         for (auto atom: atomData) {

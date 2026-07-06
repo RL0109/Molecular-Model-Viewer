@@ -7,7 +7,7 @@
 #include "rlgl.h"
 
 std::unordered_map<char, Color> atomsToColors = {
-    {'O', RED}, {'H', WHITE}, {'N', BLUE}, {'C' , GRAY}
+    {'O', RED}, {'H', WHITE}, {'N', BLUE}, {'C' , GRAY}, {'S', YELLOW}
 };
 
 
@@ -15,7 +15,7 @@ std::unordered_map<char, Color> atomsToColors = {
 int main () {
     
     //Open text file
-    ifstream molecularFile("LEU.cif");
+    ifstream molecularFile("1XQ8.cif");
     
     PDBFileParser parsedFile(molecularFile);
     
@@ -24,7 +24,7 @@ int main () {
 
     std::cout << "Total Atoms in cif file: " << parsedFile.atomData.size();
 
-    Vector3 startPos = {0,0,10};
+    Vector3 startPos = {0,0,150};
     Vector3 upPos = {0, 1, 0};
     Camera3D camera = {startPos, {0,0,0}, upPos, 90, CAMERA_PERSPECTIVE};
 
@@ -39,6 +39,8 @@ int main () {
 
     bool rotate = true;
     bool translate = false;
+
+    std::cout << "\n" << parsedFile.atomData[0].position.x << " , " << parsedFile.atomData[0].position.y << " , " << parsedFile.atomData[0].position.z << "\n";
 
     while (!WindowShouldClose()) {
         int key = GetKeyPressed();
@@ -93,8 +95,6 @@ int main () {
 
             rlPushMatrix();
             rlMultMatrixf(MatrixToFloat(transformMatrix));
-
-
             
             for (int i = 0; i < parsedFile.atomData.size(); i++) {
                 DrawSphere(parsedFile.atomData[i].position, 0.50f, atomsToColors[(parsedFile.atomData[i].elementId)]);
@@ -109,7 +109,7 @@ int main () {
             rlPopMatrix();
 
             EndMode3D();
-            DrawText("A molecular model of leucine!", 20, 20, 20, LIGHTGRAY);
+            GetFPS();
         EndDrawing();
 
     }
