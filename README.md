@@ -23,6 +23,7 @@ correctly:
 - raylib.h
 - raymath.h
 - rlgl.h  
-These files can be found here: https://www.raylib.com/
+
+These files can be found on the raylib website: https://www.raylib.com/
 
 When compiling via GCC or MinGW you can do the following: g++ main.cpp -L "location\of\raylib\binaries" -lraylib -lgdi32 -lwinmm -o app.exe.
