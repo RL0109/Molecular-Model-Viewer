@@ -17,12 +17,13 @@ https://www.rcsb.org/ligand/LEU.
 - Use the scroll wheel to zoom in or out on the molecule.
 
 ## Required raylib files
-The following raylib files need to be in the repo for the application to compile 
+The following raylib files need to be in the directory of the application to compile 
 correctly: 
 
 - raylib.h
 - raymath.h
-- rlgl.h
-These files can be found here: https://www.raylib.com/
+- rlgl.h  
+
+These files can be found on the raylib website: https://www.raylib.com/
 
 When compiling via GCC or MinGW you can do the following: g++ main.cpp -L "location\of\raylib\binaries" -lraylib -lgdi32 -lwinmm -o app.exe.
