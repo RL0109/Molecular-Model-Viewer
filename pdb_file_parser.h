@@ -11,7 +11,9 @@ using std::ifstream, std::cout, std::cerr, std::cin, std::string, std::vector, s
 
 
 class PDBFileParser {
-    
+    friend class ParsingTests;
+    Vector3 sum = {0.0f, 0.0f, 0.0f};
+
     public:
     struct Atom {
         Vector3 position;
@@ -125,18 +127,16 @@ class PDBFileParser {
     void centerMolecule() {
         if (atomData.empty()) return;
 
-        Vector3 sum = {0.0f, 0.0f, 0.0f};
-
         for (auto atom: atomData) {
-            sum.x = atom.position.x;
-            sum.y = atom.position.y;
-            sum.z = atom.position.z;
+            sum.x += atom.position.x;
+            sum.y += atom.position.y;
+            sum.z += atom.position.z;
         }
-
+        int numAtoms = (atomData.size());
         Vector3 centroid = {
-            sum.x / 1.0f,
-            sum.y / 1.0f,
-            sum.z / 1.0f
+            sum.x / (float)numAtoms,
+            sum.y / (float)numAtoms,
+            sum.z / (float)numAtoms
         };
 
         for (auto& atom : atomData) {
