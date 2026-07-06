@@ -20,4 +20,4 @@ correctly:
 - rlgl.h
 These files can be found here: https://www.raylib.com/
 
-When compiling make sure to have these commands: compiler main.cpp -L "location\of\raylib\binaries" -lraylib -lgdi32 -lwinmm -o app.exe.
+When compiling via GCC or MinGW you can do the following: g++ main.cpp -L "location\of\raylib\binaries" -lraylib -lgdi32 -lwinmm -o app.exe.
