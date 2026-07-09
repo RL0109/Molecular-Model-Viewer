@@ -15,6 +15,8 @@ https://www.rcsb.org/ligand/LEU.
 - Press R to click the screen and drag the mouse to rotate the molecule in any direction.
 - Press T to allow mouse dragging to move the molecule in any direction.
 - Use the scroll wheel to zoom in or out on the molecule.
+- Press B to toggle bonds on or off.
+- Press A to toggle atoms on or off.
 
 ## Required raylib files
 The following raylib files need to be in the directory of the application to compile 
