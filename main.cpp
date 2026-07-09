@@ -5,6 +5,7 @@
 #include <fstream>
 #include <unordered_map>
 #include "rlgl.h"
+#include "shader_commands.h"
 
 std::unordered_map<char, Color> atomsToColors = {
     {'O', RED}, {'H', WHITE}, {'N', BLUE}, {'C' , GRAY}, {'S', YELLOW}
@@ -43,8 +44,15 @@ int main () {
     std::cout << "\n" << parsedFile.atomData[0].position.x << " , " << parsedFile.atomData[0].position.y << " , " << parsedFile.atomData[0].position.z << "\n";
 
     // Generate basic sphere mesh a material
-    Mesh atomMesh = GenMeshSphere(5.0f, 16,16);
+    Mesh atomMesh = GenMeshSphere(0.5f, 16,16);
     Material atomMaterial = LoadMaterialDefault(); 
+
+    Shader instancingShader = LoadShaderFromMemory(instancingVertexShader, instancingFragmentShader);
+
+    atomMaterial.shader = instancingShader;
+
+    instancingShader.locs[SHADER_LOC_MATRIX_MODEL] = GetShaderLocationAttrib(instancingShader, "instanceTransform");
+
 
     //Creating unique vectors of matrices for each element type to avoid shader computing for now.
     vector<Matrix> oxygenMatrices;
