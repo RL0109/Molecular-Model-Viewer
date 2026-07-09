@@ -17,6 +17,8 @@ void renderBondsAndAtoms(PDBFileParser moleculedata, vector<Matrix> oxygen, vect
 
 void renderBonds(PDBFileParser moleculedata, Material atomMaterial, Mesh atomMesh, float modelScale);
 
+void renderAtoms(PDBFileParser moleculedata, vector<Matrix> oxygen, vector<Matrix> nitrogen,
+ vector<Matrix> sulfur, vector<Matrix> hydrogen, vector<Matrix> carbon, Material atomMaterial, Mesh atomMesh, float modelScale);
 
 
 int main () {
@@ -48,6 +50,7 @@ int main () {
     bool translate = false;
 
     bool showAtoms = true;
+    bool showBonds = true;
 
     std::cout << "\n" << parsedFile.atomData[0].position.x << " , " << parsedFile.atomData[0].position.y << " , " << parsedFile.atomData[0].position.z << "\n";
 
@@ -105,12 +108,19 @@ int main () {
             translate = false;
         }
 
-        if (key == 66) {
+        if (key == 65) {
             if (showAtoms)
             showAtoms = false;
             else 
             showAtoms = true;
             
+        }
+
+        if (key == 66) {
+            if (showBonds)
+            showBonds = false;
+            else
+            showBonds = true;
         }
 
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
@@ -154,13 +164,13 @@ int main () {
             rlPushMatrix();
             rlMultMatrixf(MatrixToFloat(transformMatrix));
             
-            //TOO MANY ARGUMENTS
-            if (showAtoms)
-            renderBondsAndAtoms(parsedFile, oxygenMatrices,
+            if (showBonds) {
+                renderBonds(parsedFile,atomMaterial, atomMesh, modelScale);
+            }
+            if (showAtoms){
+                renderAtoms(parsedFile, oxygenMatrices,
              nitrogenMatrices, sulfurMatrices, hydrogenMatrices, 
              carbonMatrices, atomMaterial, atomMesh, modelScale);
-            else {
-                renderBonds(parsedFile,atomMaterial, atomMesh, modelScale);
             }
 
             rlPopMatrix();
@@ -212,4 +222,24 @@ void renderBonds(PDBFileParser moleculedata, Material atomMaterial, Mesh atomMes
                     moleculedata.bondData[i].endPos,
                     .05f * modelScale, .05f * modelScale, 6, atomsToColors[moleculedata.bondData[i].connectId]);
             }
+}
+
+void renderAtoms(PDBFileParser moleculedata, vector<Matrix> oxygen, vector<Matrix> nitrogen,
+ vector<Matrix> sulfur, vector<Matrix> hydrogen, vector<Matrix> carbon, Material atomMaterial, Mesh atomMesh, float modelScale) 
+{
+            atomMaterial.maps[MATERIAL_MAP_DIFFUSE].color= RED;
+            DrawMeshInstanced(atomMesh, atomMaterial, oxygen.data(), oxygen.size());
+
+            atomMaterial.maps[MATERIAL_MAP_DIFFUSE].color= YELLOW;
+            DrawMeshInstanced(atomMesh, atomMaterial, sulfur.data(), sulfur.size());
+
+            atomMaterial.maps[MATERIAL_MAP_DIFFUSE].color= BLUE;
+            DrawMeshInstanced(atomMesh, atomMaterial, nitrogen.data(), nitrogen.size());
+
+            atomMaterial.maps[MATERIAL_MAP_DIFFUSE].color= GRAY;
+            DrawMeshInstanced(atomMesh, atomMaterial, carbon.data(), carbon.size());
+
+            atomMaterial.maps[MATERIAL_MAP_DIFFUSE].color= WHITE;
+            DrawMeshInstanced(atomMesh, atomMaterial, hydrogen.data(), hydrogen.size());
+            
 }
