@@ -4,8 +4,7 @@ in vec3 vertexPosition;
 in vec2 vertexTexCoord;
 in vec3 vertexNormal;
 in vec4 vertexColor;
-in mat4 instanceTransform; // The magic matrix array
-
+in mat4 instanceTransform; 
 uniform mat4 mvp;
 
 out vec3 fragPosition;
