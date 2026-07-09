@@ -5,6 +5,7 @@
 #include <fstream>
 #include <unordered_map>
 #include "rlgl.h"
+#include "shader_commands.h"
 
 std::unordered_map<char, Color> atomsToColors = {
     {'O', RED}, {'H', WHITE}, {'N', BLUE}, {'C' , GRAY}, {'S', YELLOW}
@@ -15,7 +16,7 @@ std::unordered_map<char, Color> atomsToColors = {
 int main () {
     
     //Open text file
-    ifstream molecularFile("1XQ8.cif");
+    ifstream molecularFile("9PZB.cif");
     
     PDBFileParser parsedFile(molecularFile);
     
@@ -41,6 +42,47 @@ int main () {
     bool translate = false;
 
     std::cout << "\n" << parsedFile.atomData[0].position.x << " , " << parsedFile.atomData[0].position.y << " , " << parsedFile.atomData[0].position.z << "\n";
+
+    // Generate basic sphere mesh a material
+    Mesh atomMesh = GenMeshSphere(0.5f, 16,16);
+    Material atomMaterial = LoadMaterialDefault(); 
+
+    Shader instancingShader = LoadShaderFromMemory(instancingVertexShader, instancingFragmentShader);
+
+    atomMaterial.shader = instancingShader;
+
+    instancingShader.locs[SHADER_LOC_MATRIX_MODEL] = GetShaderLocationAttrib(instancingShader, "instanceTransform");
+
+
+    //Creating unique vectors of matrices for each element type to avoid shader computing for now.
+    vector<Matrix> oxygenMatrices;
+    vector<Matrix> hydrogenMatrices;
+    vector<Matrix> carbonMatrices;
+    vector<Matrix> sulfurMatrices;
+    vector<Matrix> nitrogenMatrices;
+
+    for (int i = 0; i < parsedFile.atomData.size(); i++) {
+        Matrix mat = MatrixTranslate(parsedFile.atomData[i].position.x, parsedFile.atomData[i].position.y, parsedFile.atomData[i].position.z);
+
+        if (parsedFile.atomData[i].elementId == 'O') {
+            oxygenMatrices.push_back(mat);
+        }
+        else if (parsedFile.atomData[i].elementId == 'N') {
+            nitrogenMatrices.push_back(mat);
+        }
+        else if (parsedFile.atomData[i].elementId == 'S') {
+            sulfurMatrices.push_back(mat);
+        }
+        else if (parsedFile.atomData[i].elementId == 'C') {
+            carbonMatrices.push_back(mat);
+        }
+        else if (parsedFile.atomData[i].elementId == 'H') {
+            hydrogenMatrices.push_back(mat);
+        }
+    
+    }
+
+
 
     while (!WindowShouldClose()) {
         int key = GetKeyPressed();
@@ -96,10 +138,21 @@ int main () {
             rlPushMatrix();
             rlMultMatrixf(MatrixToFloat(transformMatrix));
             
-            for (int i = 0; i < parsedFile.atomData.size(); i++) {
-                DrawSphere(parsedFile.atomData[i].position, 0.50f, atomsToColors[(parsedFile.atomData[i].elementId)]);
-                          
-            }
+            atomMaterial.maps[MATERIAL_MAP_DIFFUSE].color= RED;
+            DrawMeshInstanced(atomMesh, atomMaterial, oxygenMatrices.data(), oxygenMatrices.size());
+
+            atomMaterial.maps[MATERIAL_MAP_DIFFUSE].color= YELLOW;
+            DrawMeshInstanced(atomMesh, atomMaterial, sulfurMatrices.data(), sulfurMatrices.size());
+
+            atomMaterial.maps[MATERIAL_MAP_DIFFUSE].color= BLUE;
+            DrawMeshInstanced(atomMesh, atomMaterial, nitrogenMatrices.data(), nitrogenMatrices.size());
+
+            atomMaterial.maps[MATERIAL_MAP_DIFFUSE].color= GRAY;
+            DrawMeshInstanced(atomMesh, atomMaterial, carbonMatrices.data(), carbonMatrices.size());
+
+            atomMaterial.maps[MATERIAL_MAP_DIFFUSE].color= WHITE;
+            DrawMeshInstanced(atomMesh, atomMaterial, hydrogenMatrices.data(), hydrogenMatrices.size());
+            
             for (int i = 0; i < parsedFile.bondData.size(); i++) {
                 DrawCylinderEx(parsedFile.bondData[i].startPos, 
                     parsedFile.bondData[i].endPos,
@@ -109,7 +162,6 @@ int main () {
             rlPopMatrix();
 
             EndMode3D();
-            GetFPS();
         EndDrawing();
 
     }
