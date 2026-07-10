@@ -192,8 +192,8 @@ int main () {
             }
             if (translate) {
                 Vector2 mouseDelta = GetMouseDelta();
-                translateX += mouseDelta.x * 0.015f;
-                translateY += -mouseDelta.y * 0.015f;
+                translateX += mouseDelta.x * 0.355f;
+                translateY += -mouseDelta.y * 0.355f;
 
             }
         }
