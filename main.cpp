@@ -11,11 +11,11 @@ std::unordered_map<char, Color> atomsToColors = {
     {'O', RED}, {'H', WHITE}, {'N', BLUE}, {'C' , GRAY}, {'S', YELLOW}
 };
 
-void renderBonds(PDBFileParser& moleculedata, vector<Matrix>& oxygen, vector<Matrix>& nitrogen,
- vector<Matrix>& sulfur, vector<Matrix>& hydrogen, vector<Matrix>& carbon, Material& bondMaterial, Mesh& bondMesh, float& modelScale);
+void renderBonds(const PDBFileParser& moleculedata, const vector<Matrix>& oxygen, const vector<Matrix>& nitrogen,
+ const vector<Matrix>& sulfur, const vector<Matrix>& hydrogen, const vector<Matrix>& carbon, Material& bondMaterial, const Mesh& bondMesh, const float& modelScale);
 
-void renderAtoms(PDBFileParser& moleculedata, vector<Matrix>& oxygen, vector<Matrix>& nitrogen,
- vector<Matrix>& sulfur, vector<Matrix>& hydrogen, vector<Matrix>& carbon, Material& atomMaterial, Mesh& atomMesh, float& modelScale);
+void renderAtoms(const PDBFileParser& moleculedata, const vector<Matrix>& oxygen, const vector<Matrix>& nitrogen,
+ const vector<Matrix>& sulfur, const vector<Matrix>& hydrogen, const vector<Matrix>& carbon, Material& atomMaterial, const Mesh& atomMesh, const float& modelScale);
 
 
 int main () {
@@ -251,8 +251,8 @@ int main () {
     return 0;
 }
 
-void renderBonds(PDBFileParser& moleculedata, vector<Matrix>& oxygen, vector<Matrix>& nitrogen,
- vector<Matrix>& sulfur, vector<Matrix>& hydrogen, vector<Matrix>& carbon, Material& bondMaterial, Mesh& bondMesh, float& modelScale) {
+void renderBonds(const PDBFileParser& moleculedata, const vector<Matrix>& oxygen, const vector<Matrix>& nitrogen,
+ const vector<Matrix>& sulfur, const vector<Matrix>& hydrogen, const vector<Matrix>& carbon, Material& bondMaterial, const Mesh& bondMesh, const float& modelScale) {
             bondMaterial.maps[MATERIAL_MAP_DIFFUSE].color= RED;
             DrawMeshInstanced(bondMesh, bondMaterial, oxygen.data(), oxygen.size());
 
@@ -269,8 +269,8 @@ void renderBonds(PDBFileParser& moleculedata, vector<Matrix>& oxygen, vector<Mat
             DrawMeshInstanced(bondMesh, bondMaterial, hydrogen.data(), hydrogen.size());
 }
 
-void renderAtoms(PDBFileParser& moleculedata, vector<Matrix>& oxygen, vector<Matrix>& nitrogen,
- vector<Matrix>& sulfur, vector<Matrix>& hydrogen, vector<Matrix>& carbon, Material& atomMaterial, Mesh& atomMesh, float& modelScale) 
+void renderAtoms(const PDBFileParser& moleculedata, const vector<Matrix>& oxygen, const vector<Matrix>& nitrogen,
+ const vector<Matrix>& sulfur, const vector<Matrix>& hydrogen, const vector<Matrix>& carbon, Material& atomMaterial, const Mesh& atomMesh, const float& modelScale) 
 {
             atomMaterial.maps[MATERIAL_MAP_DIFFUSE].color= RED;
             DrawMeshInstanced(atomMesh, atomMaterial, oxygen.data(), oxygen.size());
