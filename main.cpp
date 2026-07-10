@@ -11,11 +11,11 @@ std::unordered_map<char, Color> atomsToColors = {
     {'O', RED}, {'H', WHITE}, {'N', BLUE}, {'C' , GRAY}, {'S', YELLOW}
 };
 
-void renderBonds(PDBFileParser moleculedata, vector<Matrix> oxygen, vector<Matrix> nitrogen,
- vector<Matrix> sulfur, vector<Matrix> hydrogen, vector<Matrix> carbon, Material bondMaterial, Mesh bondMesh, float modelScale);
+void renderBonds(PDBFileParser& moleculedata, vector<Matrix>& oxygen, vector<Matrix>& nitrogen,
+ vector<Matrix>& sulfur, vector<Matrix>& hydrogen, vector<Matrix>& carbon, Material& bondMaterial, Mesh& bondMesh, float& modelScale);
 
-void renderAtoms(PDBFileParser moleculedata, vector<Matrix> oxygen, vector<Matrix> nitrogen,
- vector<Matrix> sulfur, vector<Matrix> hydrogen, vector<Matrix> carbon, Material atomMaterial, Mesh atomMesh, float modelScale);
+void renderAtoms(PDBFileParser& moleculedata, vector<Matrix>& oxygen, vector<Matrix>& nitrogen,
+ vector<Matrix>& sulfur, vector<Matrix>& hydrogen, vector<Matrix>& carbon, Material& atomMaterial, Mesh& atomMesh, float& modelScale);
 
 
 int main () {
@@ -119,7 +119,7 @@ int main () {
 
         //Offset correct from GenCylinder
         Matrix centerShift = MatrixTranslate(0.0f, -0.5f, 0.0f);
-        
+
         Matrix scaleMat = MatrixScale(0.1f, distance, 0.1f);
         Vector3 midPoint = Vector3Scale(Vector3Add(parsedFile.bondData[i].endPos, parsedFile.bondData[i].startPos), 0.5f);
         Matrix transMat = MatrixTranslate(midPoint.x, midPoint.y, midPoint.z);
@@ -251,8 +251,8 @@ int main () {
     return 0;
 }
 
-void renderBonds(PDBFileParser moleculedata, vector<Matrix> oxygen, vector<Matrix> nitrogen,
- vector<Matrix> sulfur, vector<Matrix> hydrogen, vector<Matrix> carbon, Material bondMaterial, Mesh bondMesh, float modelScale) {
+void renderBonds(PDBFileParser& moleculedata, vector<Matrix>& oxygen, vector<Matrix>& nitrogen,
+ vector<Matrix>& sulfur, vector<Matrix>& hydrogen, vector<Matrix>& carbon, Material& bondMaterial, Mesh& bondMesh, float& modelScale) {
             bondMaterial.maps[MATERIAL_MAP_DIFFUSE].color= RED;
             DrawMeshInstanced(bondMesh, bondMaterial, oxygen.data(), oxygen.size());
 
@@ -269,8 +269,8 @@ void renderBonds(PDBFileParser moleculedata, vector<Matrix> oxygen, vector<Matri
             DrawMeshInstanced(bondMesh, bondMaterial, hydrogen.data(), hydrogen.size());
 }
 
-void renderAtoms(PDBFileParser moleculedata, vector<Matrix> oxygen, vector<Matrix> nitrogen,
- vector<Matrix> sulfur, vector<Matrix> hydrogen, vector<Matrix> carbon, Material atomMaterial, Mesh atomMesh, float modelScale) 
+void renderAtoms(PDBFileParser& moleculedata, vector<Matrix>& oxygen, vector<Matrix>& nitrogen,
+ vector<Matrix>& sulfur, vector<Matrix>& hydrogen, vector<Matrix>& carbon, Material& atomMaterial, Mesh& atomMesh, float& modelScale) 
 {
             atomMaterial.maps[MATERIAL_MAP_DIFFUSE].color= RED;
             DrawMeshInstanced(atomMesh, atomMaterial, oxygen.data(), oxygen.size());
