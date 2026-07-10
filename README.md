@@ -8,7 +8,7 @@ https://www.rcsb.org/ligand/LEU.
 
 ## Features
 - PDB file parsing: applies a custom parser to take atomic coordinates from PDB/CIF files
-- 3D rendering pipeline: Using sphere and cylinder primitives, creates renders atoms and bonds using raylib
+- 3D rendering pipeline: Using sphere and cylinder primitives, renders atoms and bonds using raylib
 - Interactive Controls: Using affine transforms allows users to rotate, translate, and scale the rendered atom.
 
 ## Interactive Controls
