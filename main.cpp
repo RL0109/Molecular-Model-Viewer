@@ -93,9 +93,11 @@ int main () {
     
     }
 
-
+    Matrix globalRotation = MatrixIdentity();
 
     while (!WindowShouldClose()) {
+         
+        
         int key = GetKeyPressed();
 
         if (key == 84) {
@@ -126,8 +128,14 @@ int main () {
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
             if (rotate) {
                 Vector2 mouseDelta = GetMouseDelta();
-                rotationX += mouseDelta.y * 0.015f;
-                rotationY += mouseDelta.x * 0.015f;
+                if (mouseDelta.x != 0.0f || mouseDelta.y != 0.0f) {
+                    Matrix rotX = MatrixRotate({1.0f, 0.0f,0.0f}, mouseDelta.y * 0.01f);
+                    Matrix rotY = MatrixRotate({0.0f, 1.0f,0.0f}, mouseDelta.x * 0.01f);
+
+                    Matrix increamentalRot = MatrixMultiply(rotX, rotY);
+
+                    globalRotation = MatrixMultiply(globalRotation, increamentalRot);
+                }
             }
             if (translate) {
                 Vector2 mouseDelta = GetMouseDelta();
@@ -151,7 +159,7 @@ int main () {
         Matrix scaleMatrix = MatrixScale(modelScale, modelScale, modelScale);
         Matrix translateMatrix = MatrixTranslate(translateX, translateY, 0.0f);
 
-        Matrix transformMatrix = MatrixMultiply(scaleMatrix, rotationMat);
+        Matrix transformMatrix = MatrixMultiply(scaleMatrix, globalRotation);
         transformMatrix = MatrixMultiply(transformMatrix, translateMatrix);
 
 
