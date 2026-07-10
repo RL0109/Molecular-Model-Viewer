@@ -25,7 +25,6 @@ void main() {
 }
 )";
 
-// 2. EMBED THE FRAGMENT SHADER
 const char* instancingFragmentShader = R"(
 #version 330
 in vec3 fragPosition;
@@ -34,11 +33,19 @@ in vec4 fragColor;
 in vec3 fragNormal;
 
 uniform vec4 colDiffuse;
+uniform vec3 cameraPos;
 out vec4 finalColor;
 
 void main() {
-    vec3 lightDir = normalize(vec3(0.5, 1.0, 1.0));
-    float light = max(dot(normalize(fragNormal), lightDir), 0.3);
-    finalColor = colDiffuse * vec4(vec3(light), 1.0);
+
+    vec3 normal = normalize(fragNormal);
+    
+    vec3 cameraLightDir = normalize(cameraPos - fragPosition);
+
+    float lightFactor = dot(normal, cameraLightDir);
+
+    float softDiffuse = mix(0.6, 1.0, max(lightFactor, 0.0));
+
+    finalColor = colDiffuse * vec4(vec3(softDiffuse), 1.0);
 }
 )";

@@ -71,6 +71,9 @@ int main () {
 
     bondInstancingShader.locs[SHADER_LOC_MATRIX_MODEL] = GetShaderLocationAttrib(bondInstancingShader, "instanceTransform");
 
+    // variable to grab the camera position for fragment shader
+    int camPosLoc = GetShaderLocation(instancingShader, "camPosition");
+
     //Creating unique vectors of matrices for each element type to avoid shader computing for now.
     vector<Matrix> oxygenMatrices;
     vector<Matrix> hydrogenMatrices;
@@ -150,7 +153,8 @@ int main () {
 
     while (!WindowShouldClose()) {
          
-        
+        SetShaderValue(instancingShader, camPosLoc, &camera.position, SHADER_UNIFORM_VEC3);
+
         int key = GetKeyPressed();
 
         if (key == 84) {
