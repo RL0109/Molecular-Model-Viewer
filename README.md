@@ -2,8 +2,7 @@
 
 A molecular model viewer written in C++ using the raylib libraries. 
 Currently, can take a leucine molecule and render it as spheres and 
-lines. Can render a full protein but requires tweaking the parsing 
-logic. The leucine file is provided, but can be found here: 
+lines. Can render a full protein. The leucine file is provided, but can be found here: 
 https://www.rcsb.org/ligand/LEU.
 
 ## Features
