@@ -112,19 +112,6 @@ class PDBFileParser {
     }
 
 
-
-
-    // void readData (const vector<vector<string>> &dataVector) {
-
-    //     for (auto dv : dataVector) {
-    //         for (auto d : dv) {
-    //             std::cout << d << " ";
-    //         }
-    //         cout << "\n";
-    //     }
-
-    // }
-
     void getCoordinates() {
     
         for (int i = 1; i < moleculedata.size(); i++ )
