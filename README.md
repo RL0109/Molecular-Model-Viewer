@@ -29,3 +29,9 @@ correctly:
 These files can be found on the raylib website: https://www.raylib.com/
 
 When compiling via GCC or MinGW you can do the following: g++ main.cpp -L "location\of\raylib\binaries" -lraylib -lgdi32 -lwinmm -o app.exe.
+
+## Example Photos
+
+![Rendering of Leucine Model](example_pictures/Leucine.png)
+
+![Rendering of Alpha Synuclein](example_pictures/alpha.png)
