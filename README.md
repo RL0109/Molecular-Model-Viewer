@@ -31,6 +31,9 @@ When compiling via GCC or MinGW you can do the following: g++ main.cpp -L "locat
 
 ## Example Photos
 
+Rendering of Leucine Model
 ![Rendering of Leucine Model](example_pictures/Leucine.png)
 
+
+Rendering of Alpha Synuclein Model 
 ![Rendering of Alpha Synuclein](example_pictures/alpha.png)
