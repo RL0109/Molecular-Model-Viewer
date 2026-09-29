@@ -17,18 +17,34 @@ void renderBonds(const PDBFileParser& moleculedata, const vector<Matrix>& oxygen
 void renderAtoms(const PDBFileParser& moleculedata, const vector<Matrix>& oxygen, const vector<Matrix>& nitrogen,
  const vector<Matrix>& sulfur, const vector<Matrix>& hydrogen, const vector<Matrix>& carbon, Material& atomMaterial, const Mesh& atomMesh, const float& modelScale);
 
-void runProgram(std::string fileName)
+int runProgram(const std::string& fileName);
+
+
+
+
+int main (int argc, char* argv []) {
+    const char* fileName = (argc > 1) ? argv[1] : "LEU.cif";
+    return runProgram(fileName);;
+}
+
+int runProgram(const std::string& fileName)
 {
     //Open text file
     ifstream molecularFile(fileName);
 
     if (!molecularFile.is_open()) {
         std::cerr << "Unable to open file " << fileName << "\n";
-        return;
+        return 1;
     }
 
     
     PDBFileParser parsedFile(molecularFile);
+
+    if (parsedFile.atomData.empty())
+    {
+        std::cerr << "File contains no atom coordinates " << fileName << "\n";
+        return 1;
+    }
     
     InitWindow(1060, 600, "Molecular Model Viewer");
     SetTargetFPS(60);
@@ -248,20 +264,8 @@ void runProgram(std::string fileName)
         EndDrawing();
 
     }
-
-}
-
-
-int main (int argc, char* argv []) {
-    const char* fileName = (argc > 1) ? argv[1] : "LEU.cif";
-    runProgram(fileName);
-
-
-
-
-
-
     return 0;
+
 }
 
 void renderBonds(const PDBFileParser& moleculedata, const vector<Matrix>& oxygen, const vector<Matrix>& nitrogen,
