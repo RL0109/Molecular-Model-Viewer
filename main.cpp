@@ -54,8 +54,6 @@ void runProgram(std::string fileName)
     bool showAtoms = true;
     bool showBonds = true;
 
-    std::cout << "\n" << parsedFile.atomData[0].position.x << " , " << parsedFile.atomData[0].position.y << " , " << parsedFile.atomData[0].position.z << "\n";
-
     // Generate basic sphere mesh material
     Mesh atomMesh = GenMeshSphere(0.5f, 16,16);
     Material atomMaterial = LoadMaterialDefault(); 
