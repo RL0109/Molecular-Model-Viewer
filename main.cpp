@@ -17,15 +17,20 @@ void renderBonds(const PDBFileParser& moleculedata, const vector<Matrix>& oxygen
 void renderAtoms(const PDBFileParser& moleculedata, const vector<Matrix>& oxygen, const vector<Matrix>& nitrogen,
  const vector<Matrix>& sulfur, const vector<Matrix>& hydrogen, const vector<Matrix>& carbon, Material& atomMaterial, const Mesh& atomMesh, const float& modelScale);
 
-
-int main () {
-    
+void runProgram(std::string fileName)
+{
     //Open text file
-    ifstream molecularFile("9PZB.cif");
+    ifstream molecularFile(fileName);
+
+    if (!molecularFile.is_open()) {
+        std::cerr << "Unable to open file " << fileName << "\n";
+        return;
+    }
+
     
     PDBFileParser parsedFile(molecularFile);
     
-    InitWindow(800, 450, "Molecular Model Viewer");
+    InitWindow(1060, 600, "Molecular Model Viewer");
     SetTargetFPS(60);
 
     std::cout << "Total Atoms in cif file: " << parsedFile.atomData.size();
@@ -246,6 +251,12 @@ int main () {
 
     }
 
+}
+
+
+int main (int argc, char* argv []) {
+    const char* fileName = (argc > 1) ? argv[1] : "LEU.cif";
+    runProgram(fileName);
 
 
 
