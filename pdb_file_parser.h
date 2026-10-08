@@ -163,7 +163,7 @@ class PDBFileParser {
         for (auto& atom : atomData) {
             atom.position = Vector3Subtract(atom.position, centroid);
             // Getting radius in the same pass through
-            radius = std::max(size, Vector3Length(atom.position));
+            radius = std::max(radius, Vector3Length(atom.position));
         }
 
     }
