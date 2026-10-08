@@ -51,7 +51,9 @@ int runProgram(const std::string& fileName)
 
     std::cout << "Total Atoms in cif file: " << parsedFile.atomData.size();
 
-    Vector3 startPos = {0,0,150};
+    //Using radius of the molecule to fit the screen
+    float drawSize = std::max(4.0f, parsedFile.radius) + 2.0f;
+    Vector3 startPos = {0,0,drawSize};
     Vector3 upPos = {0, 1, 0};
     Camera3D camera = {startPos, {0,0,0}, upPos, 90, CAMERA_PERSPECTIVE};
 
