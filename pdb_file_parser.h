@@ -48,7 +48,6 @@ class PDBFileParser {
     vector<Vector3> coordinates;
     vector<Atom> atomData;
     vector<Bond> bondData;
-    float size;
     float radius;
 
     PDBFileParser(ifstream &moleculeFile) {
