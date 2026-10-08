@@ -42,7 +42,7 @@ molecules/9PZB.cif
 ```
 ./run.sh molecules/1XQ8.cif
 ```
-- If no molecule given, it will automatically run LEU.cif
+- If no molecule is given, it will automatically run LEU.cif
 - Please be aware that this will run through the CPU instead of the GPU, so larger molecules 
 may run slower. 
 
