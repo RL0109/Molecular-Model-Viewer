@@ -48,7 +48,7 @@ class PDBFileParser {
     vector<Vector3> coordinates;
     vector<Atom> atomData;
     vector<Bond> bondData;
-    float size;
+    float radius;
 
     PDBFileParser(ifstream &moleculeFile) {
         parseFile(moleculeFile);
@@ -111,6 +111,9 @@ class PDBFileParser {
         }
     }
 
+    float getMoleculeRadius() {
+        return radius;
+    }
 
     void getCoordinates() {
     
@@ -158,6 +161,8 @@ class PDBFileParser {
 
         for (auto& atom : atomData) {
             atom.position = Vector3Subtract(atom.position, centroid);
+            // Getting radius in the same pass through
+            radius = std::max(radius, Vector3Length(atom.position));
         }
 
     }
